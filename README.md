@@ -1,6 +1,6 @@
 # HtmlReport
 ## 概要 
-htmlをReportとして使用するためのサンプル
+htmlをReportとして使用するためのサンプル  
 jsonデータをhtmlテンプレートの内容にあわせて帳票用に加工。  
 ページを超えると自動で改ページして  
 ヘッダー・フッターなどを再表示する。  
@@ -17,7 +17,7 @@ https://kaerugit.github.io/HtmlReport
     <link rel="stylesheet" href="./../css/paper.min.css">
 ***
 
-## reportテンプレート処理概要  
+## Reportテンプレート処理概要  
 各タブに以下Attributeを追加し、そのタグ内に<header><footer>を追加する
 
 reporttype="page"       ページヘッダー・フッター
@@ -67,8 +67,12 @@ javscriptで書くことも可能 sample(norepeat.html参照)
     IsBreakPage
 
 ## イベント
-　　各format時のイベント sample(norepeat.html参照)
-    FormatEventFunction  
+各format時のイベント sample(norepeat.html参照)  
+FormatEventFunction  
+
+## ヘッダー、フッターの合計計算について
+便利なsum関数などはありません。  
+あらかじめ計算した結果をjsonにセットして対応してください  
 
 ## 苦手なもの
 ・自然改行が含む帳票（動きが予測できない）
