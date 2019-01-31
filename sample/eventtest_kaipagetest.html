@@ -1,0 +1,311 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+
+    <script src="./../javascript/report.js"></script>
+
+    <!-- https://github.com/cognitom/paper-css*/ -->
+    <link rel="stylesheet" href="./../css/paper.min.css">
+
+    <title></title>
+    <style>        
+        @page { size: A4 }
+
+         /* オリジナル */
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        td,th{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<!-- Set "A5", "A4" or "A3" for class name -->
+<!-- Set also "landscape" if you need -->
+<body class="A4" style="visibility:hidden">
+    
+    <!-- reporttype="page" add  reporttype = "page"or "detail" or "group1～9" -->
+    <div reporttype="page">
+        <!-- pageheader(ページヘッダ)-->
+        <header style="height:15mm; position:relative">
+            <div style="text-align:center">都道府県リスト(page-header)</div>
+        </header>
+        <!-- pagefooter(ページフッタ)-->
+        <footer style="height:15mm; position:relative">
+            <div style="text-align:center">フッタ(page-footer)</div>
+        </footer>
+    </div>
+
+    <!--
+        reportproperty 
+
+        BindField ⇒ 連動するfield
+        IsPageRepert ⇒ 改ページ時に繰り返す場合：true
+        IsBreakPage ⇒ 改ページする場合：true
+    -->
+
+    <!-- 
+        group1～group9 にtable tagを置いて
+        thead と tfoot を置くと reporttype="detail" と連結して出力
+
+        tableと連結したくない場合は IsMergeTable:false をセットして <header><footer>タグ内にデータをセット
+
+    -->
+    <div reporttype="group1" reportproperty="{'BindField':'都道府県CD','IsPageRepert':'true','IsBreakPage':'false'}"><!-- ,'IsMergeTable':'false' -->
+        <table>
+            <thead >
+                <tr style="height:15mm;">
+                    <td colspan="2">都道府県：</td>
+                    <td colspan="3">[[都道府県]]</td>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="2">都道府県Count：</td>
+                    <td colspan="3">[[datacount]]</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div reporttype="group2" reportproperty="{'BindField':'性別','IsPageRepert':'true','IsBreakPage':'false'}">
+        <table>
+            <thead>
+                <tr style="height:15mm;">
+                    <td colspan="3">性別：</td>
+                    <td colspan="2">[[性別]]</td>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="3">性別CountAAA：</td>
+                    <td colspan="2">[[sexdatacount]]</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div reporttype="group3" reportproperty="{'BindField':'性別','IsPageRepert':'true','IsBreakPage':'false'}">
+        <table>
+            <thead>
+                <tr style="height:15mm;">
+                    <td colspan="3">333</td>
+                    <td colspan="2">[[性別]]</td>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="3">性別CountBBB：</td>
+                    <td colspan="2">[[sexdatacount]]</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div reporttype="group4" reportproperty="{'BindField':'性別','IsPageRepert':'true','IsBreakPage':'false'}">
+        <table>
+            <thead>
+                <tr style="height:15mm;">
+                    <td colspan="3">444</td>
+                    <td colspan="2">[[性別]]</td>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="3">性別CountCCC：</td>
+                    <td colspan="2">[[sexdatacount]]</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div reporttype="detail">
+        <table style="width:100%">
+            <thead>
+                <tr>
+                    <th style="width:20mm">連番</th>
+                    <th style="width:30mm">郵便番号</th>
+                    <th style="width:40mm">氏名</th>
+                    <th style="width:50mm">電話番号</th>
+                    <th >Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- template [[xxx]] replace  
+                    テンプレート[[xxx]]がデータと連結  
+                -->
+                <tr style="height:20mm">
+                    <td style="text-align:center">[[連番]]</td>
+                    <td>[[郵便番号]]</td>
+                    <td>[[氏名]]</td>
+                    <td style="text-align:center">[[電話番号]]</td>
+                    <td>[[Email]]</td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+                <tr style="height:50mm">
+                    <td colspan="4">footertest</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+            -->
+        </table>
+    </div>
+</body>
+</html>
+
+<script>
+    var mainItems;
+    
+    window.addEventListener('DOMContentLoaded',
+      function () {
+          let req = new XMLHttpRequest();
+          req.onreadystatechange = function () {
+              if (req.readyState == 4 && req.status == 200) {
+                  if (req.response) {
+                      //データのセット
+                      if (typeof req.response == 'object') {
+                          mainItems = req.response;
+                      }
+                      else {
+                          mainItems = JSON.parse(req.response);
+                      }
+                  }
+
+                  //let filter = mainItems.filter(
+                  //  function (item) {
+                  //      if (item["都道府県CD"] == 32) {
+                  //          return true;
+                  //      }
+                  //      return false;
+                  //  }
+                  //);
+
+                  //sort
+                  mainItems.sort(
+                      function (a, b) {
+                          if (a["都道府県CD"] + a["性別"] < b["都道府県CD"] + b["性別"]) { return -1; }
+                          else if (a["都道府県CD"] + a["性別"] > b["都道府県CD"] + b["性別"]) { return 1; }
+
+                          //if (a["性別"] < b["性別"]) { return -1; }
+                          //else if (a["性別"] > b["性別"]) { return 1; }
+
+                          return 0;
+                      }
+                      );
+
+                  filter = JSON.parse(JSON.stringify(mainItems));
+                  mainItems = [];
+
+                  let kendatacount = 1;
+                  let sexdatacount = 1;
+                  for (let i = 0; i < filter.length; i++) {  //filter.length
+                      filter[i]["連番"] = i + 1;
+
+                      if (i != 0) {
+                          if (filter[i - 1]["都道府県CD"] != filter[i]["都道府県CD"]) {
+                              kendatacount = 1;
+                              sexdatacount = 1;
+                          }
+                          else if (filter[i - 1]["性別"] != filter[i]["性別"]) {
+                              sexdatacount = 1;
+                          }
+                      }
+                      //データは先に作成しておく
+                      filter[i]["datacount"] = kendatacount;
+                      filter[i]["sexdatacount"] = sexdatacount;
+                      kendatacount++;
+                      sexdatacount++;
+
+                      mainItems.push(filter[i]);
+                  }
+
+              }
+          }
+          req.open('GET', './../data/personal.json', true);
+          req.responseType = 'json';
+          req.send(null);
+
+      }
+    );
+
+    //データ読み込みまで待つため(test用)
+    setTimeout(
+        function () {
+
+            //pageevents add
+            let page = new Report.ReportDataClass();
+
+            page.FormatEventFunction = function (fet, ele, data) {
+                if (fet == FormatEventType.Header) {
+                    ele.querySelector("div").style.backgroundColor = "red";
+                }
+                else if (fet == FormatEventType.Header) {
+                    ele.querySelector("div").style.backgroundColor = "yellow";
+                }
+            };
+
+            //group1events add
+            let group1 = new Report.ReportDataClass();
+            group1.FormatEventFunction = function (fet, ele, data) {
+                if (fet == FormatEventType.Header) {
+                    ele.querySelector("tr").style.backgroundColor = "yellow";
+                }
+                else if (fet == FormatEventType.Footer) {
+                    ele.querySelector("tr").style.backgroundColor = "pink";
+                }
+            };
+
+            //group2events add
+            let group2 = new Report.ReportDataClass();
+            group2.FormatEventFunction = function (fet, ele, data) {
+                if (fet == FormatEventType.Header) {
+                    ele.querySelector("tr").style.backgroundColor = "gray";
+                }
+                else if (fet == FormatEventType.Footer) {
+                    ele.querySelector("tr").style.backgroundColor = "red";
+                }
+            };
+
+
+            //Detailevents add
+            let detail = new Report.ReportDataClass();
+            //ele changOK 変更可
+            //data readonly(変更不可)
+            detail.FormatEventFunction = function (fet, ele, data) {
+                if (fet == FormatEventType.Header) {
+                    ele.querySelector("tr").style.backgroundColor = "lightpink";
+                }
+                else if (fet == FormatEventType.Footer) {
+                    ele.querySelector("tr").style.backgroundColor = "blue";
+                }
+                else {
+                    ele.querySelector("tr").style.backgroundColor = "lightgray";
+                }
+            };
+
+            //データは並び替えておくこと
+            let reportOption = {
+                //tergetData 対象データ
+                Data: JSON.parse(JSON.stringify(mainItems)),
+                //余白のCss
+                MarginCss: "padding-10mm",
+
+                //property Report.ReportClass set  (プロパティはReport.ReportClassと同じものをセット)
+                Page: page,
+                Detail: detail,
+                Group1: group1,
+                Group2: group2,
+            }
+
+
+            Report.Run(reportOption);
+        }
+        , 2000
+    );
+
+</script>
