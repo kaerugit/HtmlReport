@@ -5,6 +5,9 @@ jsonデータをhtmlテンプレートの内容にあわせて帳票用に加工
 ページを超えると自動で改ページして  
 ヘッダー・フッターなどを再表示する。  
 
+ ## オンラインサンプル（online sample）  
+https://kaerugit.github.io/HtmlReport  
+
 ## 使用方法
 ***    
     <!-- 本プロジェクト -->
