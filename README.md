@@ -63,7 +63,7 @@ javscriptで書くことも可能 sample(norepeat.html参照)
     改ページの場合、データを繰り返し表示(boolean)
     IsPageRepert
 
-    改ページ（複数は不可） 複数必要な場合はjsonで対応しておくこと
+    改ページ（複数は不可） 複数必要な場合はjsonで対応しておくこと(boolean)
     IsBreakPage
 
 ## イベント

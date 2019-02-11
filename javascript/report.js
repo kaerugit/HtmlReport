@@ -842,7 +842,7 @@ Report.Run = function (reportOption,isPrint) {
         }
     }
 
-    body.style.visibility = "";
+    body.style.visibility = "visible";
 
     if (isPrint) {
         window.print();
