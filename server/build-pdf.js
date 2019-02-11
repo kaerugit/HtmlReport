@@ -1,6 +1,8 @@
+//参考　https://qiita.com/umi_kappa/items/11f4470b75e01bff5c1b
+
 const fs = require('fs');
 const puppeteer = require('puppeteer');
-//console.log('aaaa1');
+//const http = require('http');
 
 (async () => {
 
@@ -8,8 +10,11 @@ const puppeteer = require('puppeteer');
     const OUTPUT_PATH = './pdf/';
     // PDFのファイル名
     const FILE_NAME = 'testpdf';
+
+    const FULL_FILE_NAME = `${OUTPUT_PATH}${FILE_NAME}.pdf`;
     // PDFの用紙フォーマット
     const FORMAT = 'A4';
+    //出力したいHTML
     const URL = 'https://kaerugit.github.io/HtmlReport/sample/nomal.html';
   
     
@@ -21,10 +26,11 @@ const puppeteer = require('puppeteer');
   
         await page.goto(URL, {timeout: 10000, waitUntil:["load", "domcontentloaded"]});
         
-        await page.waitFor(selector => !!document.querySelector(selector), {}, ".complete");
+        //このクラスが出現するまで待つ(.htmlと連携)
+        const selector = '.complete';
+        await page.waitFor(selector => !!document.querySelector(selector), {timeout: 30000}, selector);
         //await page.waitFor(1000*10);
-        //await page.waitForSelector('body', {visibility: 'hidden'});
-
+        
         // 出力先のディレクトリが無ければ生成
         if (!fs.existsSync(OUTPUT_PATH)) {
           fs.mkdirSync(OUTPUT_PATH);
@@ -32,36 +38,14 @@ const puppeteer = require('puppeteer');
 
         // PDF作成処理
         await page.pdf({
-          path: `${OUTPUT_PATH}${FILE_NAME}.pdf`,
+          path: FULL_FILE_NAME ,
           format: FORMAT
         });
 
         // Headless Chromeを閉じる
-        browser.close();
-        
-        /*        
-        // HTMLの描画ロジック側からwindow.puppeteerPdfでPDF生成
-        await page.exposeFunction('puppeteerPdf',
-          async () => {
-            await console.log(`${OUTPUT_PATH}${FILE_NAME}.pdf`);
-              
-            // 出力先のディレクトリが無ければ生成
-            if (!fs.existsSync(OUTPUT_PATH)) {
-              fs.mkdirSync(OUTPUT_PATH);
-            }
-  
-            // PDF作成処理
-            await page.pdf({
-              path: `${OUTPUT_PATH}${FILE_NAME}.pdf`,
-              format: FORMAT
-            });
-  
-            // Headless Chromeを閉じる
-            browser.close();
-          });
-          */
+        browser.close();        
       }); 
-
+       
 })();
 
 
