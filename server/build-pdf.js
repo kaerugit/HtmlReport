@@ -21,7 +21,7 @@ const puppeteer = require('puppeteer');
   
         await page.goto(URL, {timeout: 10000, waitUntil:["load", "domcontentloaded"]});
         
-        await page.waitFor(selector => !!document.querySelector(selector), {}, "body[style='visibility:visible'");
+        await page.waitFor(selector => !!document.querySelector(selector), {}, ".complete");
         //await page.waitFor(1000*10);
         //await page.waitForSelector('body', {visibility: 'hidden'});
 

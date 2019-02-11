@@ -843,6 +843,7 @@ Report.Run = function (reportOption,isPrint) {
     }
 
     body.style.visibility = "visible";
+    body.classList.add("complete"); //pdf作成用
 
     if (isPrint) {
         window.print();
