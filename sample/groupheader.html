@@ -6,7 +6,7 @@
 
     <script src="./../javascript/report.js"></script>
 
-    <!-- https://github.com/cognitom/paper-css*/ -->
+    <!-- https://github.com/cognitom/paper-css -->
     <link rel="stylesheet" href="./../css/paper.min.css">
 
     <title></title>
@@ -56,12 +56,14 @@
     -->
     <div reporttype="group1" reportproperty="{'BindField':'都道府県CD','IsPageRepert':'true','IsBreakPage':'true'}"><!-- ,'IsMergeTable':'false' -->
         <table>
+            <!-- グループヘッダー（reporttype="detail"のテーブルと連結） -->
             <thead>
                 <tr>
                     <td colspan="2">都道府県：</td>
                     <td colspan="3">[[都道府県]]</td>
                 </tr>
             </thead>
+            <!-- グループフッタ（reporttype="detail"のテーブルと連結） -->
             <tfoot>
                 <tr>
                     <td colspan="2">都道府県Count：</td>
@@ -73,12 +75,14 @@
 
     <div reporttype="group2" reportproperty="{'BindField':'性別','IsPageRepert':'true','IsBreakPage':'false'}">
         <table>
+            <!-- グループヘッダー（reporttype="detail"のテーブルと連結） -->
             <thead>
                 <tr>
                     <td colspan="3">性別：</td>
                     <td colspan="2">[[性別]]</td>
                 </tr>
             </thead>
+            <!-- グループフッタ（reporttype="detail"のテーブルと連結） -->
             <tfoot>
                 <tr>
                     <td colspan="3">性別Count：</td>
@@ -191,6 +195,8 @@
                       mainItems.push(filter[i]);
                   }
 
+                  //レポートの実行
+                  runReport(mainItems);
               }
           }
           req.open('GET', './../data/personal.json', true);
@@ -200,20 +206,25 @@
       }
     );
 
-    //データ読み込みまで待つため(test用)
-    setTimeout(
-        function () {
+    function runReport(mainItems) {
 
-            //データは並び替えておくこと
-            let reportOption = {
-                //tergetData 対象データ
-                Data: mainItems,
-                //余白のCss
-                MarginCss: "padding-10mm"
-            }
-            Report.Run(reportOption);
-        }
-        , 2000
-    );
+        //データは並び替えておくこと
+        let reportOption = {
+            //tergetData 対象データ
+            Data: mainItems,
+            //余白のCss
+            MarginCss: "padding-10mm",
+            //レポート作成後のイベント
+            ReportEndFunction: function () {
+                ////all page loop
+                //let eleArray = document.querySelectorAll("section"); 
+                //for (let index = 0; index < eleArray.length; index++) {
+                //}
+            },
+        };
+
+        Report.Run(reportOption);
+    }
+       
 
 </script>

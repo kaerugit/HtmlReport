@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+
+    <script src="./../javascript/report.js"></script>
+
+    <!-- https://github.com/cognitom/paper-css -->
+    <link rel="stylesheet" href="./../css/paper.min.css">
+
+    <title></title>
+    <style>        
+        @page { size: A4 }
+
+         /* オリジナル(iframe内と同じものが必要) */
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        td,th{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<!-- Set "A5", "A4" or "A3" for class name -->
+<!-- Set also "landscape" if you need -->
+<body class="A4" style="visibility:hidden">
+    <!-- iframe内で別々の帳票を作成しjavascriptで結合するサンプル -->
+    <iframe id="if1" src="nomal.html"></iframe>
+    <iframe id="if2" src="tackseal.html"></iframe>
+</body>
+</html>
+
+<script>
+    
+    function MergeReport() {
+
+        const waitfunc = function () {
+            setTimeout(
+                function () {
+                    MergeReport();
+                }
+                , 1000
+            );
+
+        };
+
+        //作成されるのを待つ
+        const if1 = document.getElementById('if1').contentWindow.document;
+        const if2 = document.getElementById('if2').contentWindow.document;
+
+        if (if1.readyState != 'complete') {
+            waitfunc();
+            return;
+        }
+
+        if (if2.readyState != 'complete') {
+            waitfunc();
+            return;
+        }
+
+        if (if1.body.style.visibility == "hidden") {
+            waitfunc();
+            return;
+        }
+
+        if (if2.body.style.visibility == "hidden") {
+            waitfunc();
+            return;
+        }
+
+        const body = document.body;
+
+        //終了後 それぞれの1ページ目を結合して新たな帳票を作成
+        //（紙のサイズ＆縦横混合は出来ない？）
+        let eleArray1 = if1.querySelectorAll("section");
+
+        if (eleArray1.length > 0) {
+            let div = document.createElement("div");
+            div.innerText = "javascriptで勝手に追加することも可能！透かし等もいけるんでない？"
+            div.style.backgroundColor = "red";
+            div.style.position = "absolute";
+            div.style.top = "0px";
+            div.style.left = "0px";
+
+            eleArray1[0].appendChild(div);
+
+            body.appendChild(eleArray1[0]);
+        }
+
+        let eleArray2 = if2.querySelectorAll("section");
+
+        if (eleArray2.length > 0) {
+            body.appendChild(eleArray2[0]);
+        }
+
+        //削除
+        body.removeChild(document.getElementById('if1'));
+        body.removeChild(document.getElementById('if2'));
+
+        body.style.visibility = "visible";
+    }
+
+    MergeReport();
+</script>

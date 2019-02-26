@@ -194,7 +194,8 @@
 
                       mainItems.push(filter[i]);
                   }
-
+                  //レポートの実行
+                  runReport(mainItems);
               }
           }
           req.open('GET', './../data/personal.json', true);
@@ -204,80 +205,76 @@
       }
     );
 
-    //データ読み込みまで待つため(test用)
-    setTimeout(
-        function () {
+    function runReport(mainItems) {
 
-            //pageevents add
-            let page = new Report.ReportDataClass();
-
-            page.FormatEventFunction = function (fet, ele, data) {
-                if (fet == FormatEventType.Header) {
-                    ele.querySelector("div").style.backgroundColor = "red";
-                }
-                else if (fet == FormatEventType.Header) {
-                    ele.querySelector("div").style.backgroundColor = "yellow";
-                }
-            };
-
-            //group1events add
-            let group1 = new Report.ReportDataClass();
-            group1.FormatEventFunction = function (fet, ele, data) {
-                if (fet == FormatEventType.Header) {
-                    ele.querySelector("tr").style.backgroundColor = "yellow";
-                }
-                else if (fet == FormatEventType.Footer) {
-                    ele.querySelector("tr").style.backgroundColor = "pink";
-                }
-            };
-
-            //group2events add
-            let group2 = new Report.ReportDataClass();
-            group2.FormatEventFunction = function (fet, ele, data) {
-                if (fet == FormatEventType.Header) {
-                    ele.querySelector("tr").style.backgroundColor = "gray";
-                }
-                else if (fet == FormatEventType.Footer) {
-                    ele.querySelector("tr").style.backgroundColor = "red";
-                }
-            };
-
-
-            //Detailevents add
-            let detail = new Report.ReportDataClass();
-            //ele changOK 変更可
-            //data readonly(変更不可)
-            detail.FormatEventFunction = function (fet, ele, data) {
-                if (fet == FormatEventType.Header) {
-                    ele.querySelector("tr").style.backgroundColor = "lightpink";
-                }
-                else if (fet == FormatEventType.Footer) {
-                    ele.querySelector("tr").style.backgroundColor = "blue";
-                }
-                else {
-                    ele.querySelector("tr").style.backgroundColor = "lightgray";
-                    //ele.querySelector("tr").style.backgroundColor = "transparent";
-                }
-            };
-
-            //データは並び替えておくこと
-            let reportOption = {
-                //tergetData 対象データ
-                Data: mainItems,
-                //余白のCss
-                MarginCss: "padding-10mm",
-
-                //property Report.ReportClass set  (プロパティはReport.ReportClassと同じものをセット)
-                Page: page,
-                Detail: detail,
-                Group1: group1,
-                Group2: group2,
+        //pageevents add
+        let page = new Report.ReportDataClass();
+            
+        page.FormatEventFunction = function (fet, ele, data) {
+            if (fet == FormatEventType.Header) {
+                ele.querySelector("div").style.backgroundColor = "red";
             }
+            else if (fet == FormatEventType.Header) {
+                ele.querySelector("div").style.backgroundColor = "yellow";
+            }
+        };
+
+        //group1events add
+        let group1 = new Report.ReportDataClass();
+        group1.FormatEventFunction = function (fet, ele, data) {
+            if (fet == FormatEventType.Header) {
+                ele.querySelector("tr").style.backgroundColor = "yellow";
+            }
+            else if (fet == FormatEventType.Footer) {
+                ele.querySelector("tr").style.backgroundColor = "pink";
+            }
+        };
+
+        //group2events add
+        let group2 = new Report.ReportDataClass();
+        group2.FormatEventFunction = function (fet, ele, data) {
+            if (fet == FormatEventType.Header) {
+                ele.querySelector("tr").style.backgroundColor = "gray";
+            }
+            else if (fet == FormatEventType.Footer) {
+                ele.querySelector("tr").style.backgroundColor = "red";
+            }
+        };
 
 
-            Report.Run(reportOption);
-        }
-        , 2000
-    );
+        //Detailevents add
+        let detail = new Report.ReportDataClass();
+        //ele changOK 変更可
+        //data readonly(変更不可)
+        detail.FormatEventFunction = function (fet, ele, data) {
+            if (fet == FormatEventType.Header) {
+                ele.querySelector("tr").style.backgroundColor = "lightpink";
+            }
+            else if (fet == FormatEventType.Footer) {
+                ele.querySelector("tr").style.backgroundColor = "blue";
+            }
+            else {
+                ele.querySelector("tr").style.backgroundColor = "lightgray";
+                //ele.querySelector("tr").style.backgroundColor = "transparent";
+            }
+        };
+
+        //データは並び替えておくこと
+        let reportOption = {
+            //tergetData 対象データ
+            Data: mainItems,
+            //余白のCss
+            MarginCss: "padding-10mm",
+
+            //property Report.ReportClass set  (プロパティはReport.ReportClassと同じものをセット)
+            Page: page,
+            Detail: detail,
+            Group1: group1,
+            Group2: group2,
+        };
+
+
+        Report.Run(reportOption);
+    }
 
 </script>

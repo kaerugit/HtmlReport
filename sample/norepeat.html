@@ -6,7 +6,7 @@
 
     <script src="./../javascript/report.js"></script>
 
-    <!-- https://github.com/cognitom/paper-css*/ -->
+    <!-- https://github.com/cognitom/paper-css -->
     <link rel="stylesheet" href="./../css/paper.min.css">
 
     <title></title>
@@ -149,6 +149,9 @@
                   }
 
               }
+
+              //レポートの実行
+              runReport(mainItems);
           }
           req.open('GET', './../data/personal.json', true);
           req.responseType = 'json';
@@ -157,58 +160,54 @@
       }
     );
 
-    //データ読み込みまで待つため(test用)
-    setTimeout(
-        function () {
+    function runReport(mainItems) {
+                //Detailevents add
+                let detail = new Report.ReportDataClass();
 
-            //Detailevents add
-            let detail = new Report.ReportDataClass();
+                //detail.IsMergeTable = false;
+                detail.DetailRepeatCount = 20;
 
-            //detail.IsMergeTable = false;
-            detail.DetailRepeatCount = 20;
+                //fet FormatEventType
+                //ele changOK 変更可
+                //data readonly(変更不可)
+                detail.FormatEventFunction = function (fet,ele, data) {
 
-            //fet FormatEventType
-            //ele changOK 変更可
-            //data readonly(変更不可)
-            detail.FormatEventFunction = function (fet,ele, data) {
+                    if (fet != FormatEventType.Detail) {
+                        return ;
+                    }
 
-                if (fet != FormatEventType.Detail) {
-                    return ;
+                    //backgroundColor
+                    let renban = +(data["連番"] || 0)
+                    if ((renban % 2) == 0) {
+                        ele.querySelector("tr").style.backgroundColor = "lightgray";
+                    }
+                    //height change
+                    if ((renban % 10) == 0) {
+                        ele.querySelector("tr").style.height = "20mm"
+                    }
+
+                    //line change
+                    if ((data["都道府県"] || "").length == 0) {
+                        ele.querySelector("td[todofuken]").style.borderTopStyle ="none";
+                    }
+
+                    ele.querySelector("td[todofuken]").style.borderBottomStyle = "none";
+                };
+
+                //データは並び替えておくこと
+                let reportOption = {
+                    //tergetData 対象データ
+                    Data: mainItems,
+                    //余白のCss
+                    MarginCss: "padding-10mm",
+
+                    //property Report.ReportClass set  (プロパティはReport.ReportClassと同じものをセット)
+                    Detail : detail,
                 }
 
-                //backgroundColor
-                let renban = +(data["連番"] || 0)
-                if ((renban % 2) == 0) {
-                    ele.querySelector("tr").style.backgroundColor = "lightgray";
-                }
-                //height change
-                if ((renban % 10) == 0) {
-                    ele.querySelector("tr").style.height = "20mm"
-                }
 
-                //line change
-                if ((data["都道府県"] || "").length == 0) {
-                    ele.querySelector("td[todofuken]").style.borderTopStyle ="none";
-                }
+                Report.Run(reportOption, true /* run window.print();*/);
 
-                ele.querySelector("td[todofuken]").style.borderBottomStyle = "none";
-            };
-
-            //データは並び替えておくこと
-            let reportOption = {
-                //tergetData 対象データ
-                Data: mainItems,
-                //余白のCss
-                MarginCss: "padding-10mm",
-
-                //property Report.ReportClass set  (プロパティはReport.ReportClassと同じものをセット)
-                Detail : detail,
-            }
-
-
-            Report.Run(reportOption, true /* run window.print();*/);
-        }
-        , 2000
-    );
+    }
 
 </script>
