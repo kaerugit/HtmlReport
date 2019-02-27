@@ -15,7 +15,7 @@ const puppeteer = require('puppeteer');
     // PDFの用紙フォーマット
     const FORMAT = 'A4';
     //出力したいHTML
-    const URL = 'https://kaerugit.github.io/HtmlReport/sample/nomal.html';
+    const URL = 'https://kaerugit.github.io/HtmlReport/sample/seikyusyo.html';
   
     
     // Headless Chromeを起動
@@ -39,7 +39,7 @@ const puppeteer = require('puppeteer');
         // PDF作成処理
         await page.pdf({
           path: FULL_FILE_NAME ,
-          format: FORMAT
+          format: FORMAT　
         });
 
         // Headless Chromeを閉じる
