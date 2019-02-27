@@ -12,7 +12,7 @@ const puppeteer = require('puppeteer');
     const FILE_NAME = 'testpdf';
 
     const FULL_FILE_NAME = `${OUTPUT_PATH}${FILE_NAME}.pdf`;
-    // PDFの用紙フォーマット
+    // PDFの用紙フォーマット (横にする場合は印刷するhtmlの styleを　@page {size: A4 landscape;}　とする)
     const FORMAT = 'A4';
     //出力したいHTML
     const URL = 'https://kaerugit.github.io/HtmlReport/sample/seikyusyo.html';
