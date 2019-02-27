@@ -59,13 +59,13 @@
             waitfunc();
             return;
         }
-
-        if (if1.body.style.visibility == "hidden") {
+        
+        if (if1.body.style.visibility.length == 0 || if1.body.style.visibility == "hidden") {
             waitfunc();
             return;
         }
-
-        if (if2.body.style.visibility == "hidden") {
+        
+        if (if2.body.style.visibility.length == 0 || if2.body.style.visibility == "hidden") {
             waitfunc();
             return;
         }
