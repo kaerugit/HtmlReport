@@ -57,8 +57,6 @@ Report.ReportDataClass = function () {
     //format時のイベント
     this.FormatEventFunction = null //function (fet, ele, data) {}
 
-    //DetailRepeatCount使用時にDetailRepeatCountの後にフッターを追加
-    this.IsFooterLastAppend = null;
 
     //IsBreakPage時にpageをreset
     this.IsPageReset = null;
@@ -250,11 +248,6 @@ Report.Run = function (reportOption,isPrint) {
                         break;
                     }
 
-                    //DetailRepeatCount後にグループフッターを移動
-                    let last = PageDataObject.SectionElement.querySelectorAll("[" + LAST_APPEND_ATTRIBUTE + "]");
-                    for (let index = 0; index < last.length; index++) {
-                        apdEle.appendChild(last[index]);
-                    }
 
                 }
             }
@@ -354,7 +347,6 @@ Report.Run = function (reportOption,isPrint) {
     //親の要素
     const PARENT_ATTRIBUTE = "oya";
     const TABLE_ATTRIBUTE = "tableappend";
-    const LAST_APPEND_ATTRIBUTE = "Last";
     const GROUP_PAGE_ATTRIBUTE = "GroupPage";
 
     let body = document.body;
@@ -430,12 +422,6 @@ Report.Run = function (reportOption,isPrint) {
                         reportdata.HideDuplicatesField = propertyvalue;
                     }
 
-                    if (reportdata.IsFooterLastAppend == null) {
-                        propertyvalue = obj.IsFooterLastAppend;
-                        if (propertyvalue != null && propertyvalue.toLocaleLowerCase() == "true") {
-                            reportdata.IsFooterLastAppend = true;
-                        }
-                    }
                     if (reportdata.IsPageReset == null) {
                         propertyvalue = obj.IsPageReset;
                         if (propertyvalue != null && propertyvalue.toLocaleLowerCase() == "true") {
@@ -473,9 +459,6 @@ Report.Run = function (reportOption,isPrint) {
                 }
                 if (reportdata.HideDuplicatesField == null) {
                     reportdata.HideDuplicatesField = [];
-                }
-                if (reportdata.IsFooterLastAppend == null) {
-                    reportdata.IsFooterLastAppend = false;
                 }
                 if (reportdata.IsPageReset == null) {
                     reportdata.IsPageReset = false;
@@ -708,23 +691,12 @@ Report.Run = function (reportOption,isPrint) {
 
             if (eleArray.length > 0) {
                 for (let index = 0; index < eleArray.length; index++) {
-
-                    //最後に移動するデータにしるしをつけておく
-                    if (fet == FormatEventType.Footer && reportdata.IsFooterLastAppend == true) {
-                        eleArray[index].setAttribute(LAST_APPEND_ATTRIBUTE, "");
-                    }
-
                     apdEle.appendChild(eleArray[index]);
                 }
             }
 
         }
         else {
-
-            if (fet == FormatEventType.Footer && reportdata.IsFooterLastAppend == true) {
-                ele.setAttribute(LAST_APPEND_ATTRIBUTE, "");
-            }
-
             apdEle.appendChild(ele);
         }
 

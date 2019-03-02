@@ -19,7 +19,7 @@
         /* オリジナル */
         table {
             border-collapse: collapse;
-            border: 1px solid black;
+            /*border: 1px solid black;*/
         }
 
         td, th {
@@ -33,7 +33,7 @@
 
     <div reporttype="page">
         <!-- pagefooter(ページフッタ)  グループ毎のページ（IsPageReset=true がセットされているため ※IsPageReset=trueがなければ全体のページ数）-->
-        <footer style="height:15mm; position:relative">
+        <footer style="height:5mm; position:relative">
             <div style="text-align:center">[[page]]/[[pages]]←group毎ページ数sample</div>
         </footer>
     </div>
@@ -49,7 +49,6 @@
                 <label style="position:absolute;left:30mm;top:30mm;">[[氏名]]　様</label>
                 <label style="position:absolute;left:10mm;top:40mm;">Email : [[Email]]</label>
             </div>
-
             <!-- 会社情報 -->
             <div style="text-align:center;position:absolute;left:170mm;height:50mm;width:100mm;border: 1px solid black;margin-top:10mm;">
                 <label style="position:absolute;left:10mm;top:10mm;">〒</label><label style="position:absolute;left:20mm;top:10mm;">856-4313</label>
@@ -57,20 +56,8 @@
                 <label style="position:absolute;left:30mm;top:30mm;">Ruby  株式会社</label>
                 <label style="position:absolute;left:10mm;top:40mm;">Email : ruby@rubyonrails</label>
             </div>
-
         </header>
-    </div>
-    <!-- テーブルtagにMergeされる IsFooterLastAppend=true で空白行追加後、一番下に表示する -->
-    <div reporttype="group2" reportproperty="{'BindField':'都道府県CD','IsFooterLastAppend':'true'}">
-        <!-- gropufooter(グループ2フッタ)-->>
-        <table style="width:100%">
-            <tfoot>
-                <tr style="height:10mm">
-                    <td colspan="5">合計金額</td>
-                    <td style="text-align:right">[[合計金額 || #,### ]]</td>
-                </tr>
-            </tfoot>
-        </table>
+        <footer id="todofukenfooter"></footer>
     </div>
 
     <div reporttype="detail" reportproperty="{'DetailRepeatCount':'100'}">
@@ -98,6 +85,13 @@
                     <td style="text-align:right">[[金額 || #,###]]&nbsp;</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <!-- 非表示にしておく -->
+                <tr id="trSum" style="height:10mm;visibility:hidden;" >
+                    <td colspan="5" style="border:none">合計金額</td>
+                    <td style="text-align:right;border:none">[[合計金額 || #,### ]]</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </body>
@@ -185,10 +179,26 @@
             MarginCss: "padding-10mm",
             //レポート作成後のイベント
             ReportEndFunction: function () {
-                ////all page loop
-                //let eleArray = document.querySelectorAll("section");
-                //for (let index = 0; index < eleArray.length; index++) {
-                //}
+                //全ページのループ(定型)
+                let eleArray = document.querySelectorAll("section");
+                for (let index = 0; index < eleArray.length; index++) {
+
+                    let trSum = eleArray[index].querySelector("#trSum");
+                    if (trSum != null) {
+
+                        //フッターが存在する場合のみ合計表示(⇒グループが最後の場合のみ、グループ計の表示)
+                        if (eleArray[index].querySelector("#todofukenfooter") != null) {
+                            trSum.style.visibility = "";
+
+                            let td = eleArray[index].querySelectorAll("#trSum td");
+
+                            for (let index = 0; index < td.length ; index++) {
+                                td[index].style.border = "";
+                            }
+                        }
+                    }
+
+                }
             },
         };
 

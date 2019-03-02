@@ -19,7 +19,7 @@
         /* オリジナル */
         table {
             border-collapse: collapse;
-            border: 1px solid black;
+            /* border: 1px solid black;*/
         }
 
         td, th {
@@ -32,8 +32,8 @@
 <body class="A4 landscape" style="visibility:hidden">
 
     <div reporttype="page">
-        <!-- pagefooter(ページフッタ) 後でページ計が挿入されるので少し高めにしておく-->
-        <footer style="height:15mm; position:relative">
+        <!-- pagefooter(ページフッタ) -->
+        <footer style="height:10mm; position:relative">
             <div style="text-align:center">[[page]]/[[pages]]←group毎ページ数sample</div>
         </footer>
     </div>
@@ -44,6 +44,7 @@
         <header style=" height:10mm; position:relative">
             <div>都道府県：[[都道府県]]</div>
         </header>
+        <footer id="todofukenfooter"></footer>
     </div>
 
     <div reporttype="detail" reportproperty="{'DetailRepeatCount':'100'}">
@@ -71,6 +72,18 @@
                     <td style="text-align:right">[[金額 || #,###]]&nbsp;<input type="hidden" name="kingaku" value="[[金額]]"></td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr style="height:10mm">
+                    <td colspan="5">ページ計</td>
+                    <td style="text-align:right" id="tdPageSumKin"></td>
+                </tr>
+                <!-- 非表示にしておく -->
+                <tr id="trSum" style="height:10mm;visibility:hidden;" >
+                    <td colspan="5" style="border:none">[[都道府県]] 合計</td>
+                    <td style="text-align:right;border:none" id="sumkin">[[合計金額 || #,###]]&nbsp;</td>
+                </tr>
+
+            </tfoot>
         </table>
     </div>
 </body>
@@ -156,32 +169,42 @@
             Data: mainItems,
             //余白のCss
             MarginCss: "padding-10mm",
-            //レポート作成後のイベント
+            //レポート作成後のイベント（工夫すればjavascriptでなんでも行けます！）
             ReportEndFunction: function () {
-                //ページ計 サンプル tableタグに入れない場合はこんなに難しくないと思います。
+                
+                //全ページのループ(定型)
                 let eleArray = document.querySelectorAll("section");
                 for (let index = 0; index < eleArray.length; index++) {
 
                     //全ての金額を取得
                     let kin = eleArray[index].querySelectorAll("[name='kingaku']");
                     let pagesum = 0;
-console.log(kin.length);                    
+        
                     for (let kinindex = 0; kinindex < kin.length; kinindex++) {
                         pagesum = pagesum + (+(kin[kinindex].value));
                     }
 
-                    let tbody = eleArray[index].querySelector("table tbody");
-                    if (tbody != null) {
-                        let tr = document.createElement('tr');
-                        tr.style.height ="10mm";
-
-                        tr.innerHTML =
-                                    '<td colspan="5">ページ計</td>' +
-                                    '<td style="text-align:right">' + DoraFormat.ParseFormat(pagesum, "#,###") + '&nbsp;</td>';
-
-                        tbody.appendChild(tr);
+                    //page計にセット
+                    let tdPageSumKin = eleArray[index].querySelector("#tdPageSumKin");
+                    if (tdPageSumKin != null) {
+                        tdPageSumKin.innerHTML = DoraFormat.ParseFormat(pagesum, "#,###") + '&nbsp;';
                     }
 
+                    let trSum = eleArray[index].querySelector("#trSum");
+                    if (trSum != null) {
+
+                        //フッターが存在する場合のみ合計表示(⇒グループが最後の場合のみ、グループ計の表示)
+                        if (eleArray[index].querySelector("#todofukenfooter") != null) {
+                            trSum.style.visibility = "";
+
+                            let td = eleArray[index].querySelectorAll("#trSum td");
+
+                            for (let index = 0; index < td.length ; index++) {
+                                td[index].style.border = "";
+                            }
+                        }
+                    }
+                    
                 }
             },
         };

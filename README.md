@@ -1,9 +1,9 @@
 # HtmlReport
 ## 概要 
-htmlをReportとして使用するためのサンプル  
-jsonデータをhtmlテンプレートの内容にあわせて帳票用に加工。  
-ページを超えると自動で改ページして  
-ヘッダー・フッターなどを再表示する。  
+htmlをReportとして使用するためのサンプル(htmlをそのまま印刷)  
+jsonデータをhtmlテンプレートの内容にあわせて帳票用に加工  
+ページを超えると自動で改ページし  
+ヘッダー・フッターなどを再表示機能を簡易的に実行出来ます  
 
 ## オンラインサンプル（online sample）  
 https://kaerugit.github.io/HtmlReport  
@@ -75,7 +75,7 @@ reporttype="detail"     詳細
         </table>
     </div>
 
-    <div reporttype="detail">
+    <div reporttype="detail"  reportproperty="{.....}">
         <table style="width:100%">
             <!-- タイトルはこちらを利用 -->
             <thead>
@@ -88,6 +88,12 @@ reporttype="detail"     詳細
                     <td>[[name]]</td>
                 </tr>
             </tbody>
+            <!-- ページ計などセット(高さを変更するとおかしくなるので注意！) -->
+            <tfoot>
+                <tr >
+                    <td>[[count]]</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
@@ -105,9 +111,11 @@ https://github.com/kaerugit/VuejsTableInput
 formatdelimiter の場所参照(javascriptも同じもの参照)  
 対象のformatが存在しない場合は自分で作成(改造)するか、bindするデータをformat済みにして対応
 
-実行は javascript で以下実行  
+レポートの生成は javascript で以下実行  
 2番目の引数をtrueの場合 window.print() を実行  
+***
 Report.Run(reportOption, true );  
+***
 
 reportOptionの詳細  
 Data: jsonデータ  
@@ -121,41 +129,46 @@ Group1～9: ReportDataClass(イベントなどの定義も可)
 
 ## プロパティ
 javscriptで書くことも可能 sample(norepeat.html参照) 
+
+* * *  
 ### reporttype = detail で使用  
-    DetailRepeatCount プロパティ (number)  
-    空欄の件数  
+* * *  
 
-    HideDuplicatesField プロパティ(array)  
-    データ重複時非表示Field  
+#### DetailRepeatCount プロパティ (number)  
+空欄(trタグ)の件数  
 
-    IsMergeTable プロパティ(boolean)  
-    falseの場合、各sectionにtabletagを配置(各sectionと結合しない)  
+#### HideDuplicatesField プロパティ(array)  
+データ重複時非表示Field  
 
+#### IsMergeTable プロパティ(boolean)  
+falseの場合、各sectionにtabletagを配置(各sectionと結合しない)  
+
+* * *  
 ### reporttype = group で使用
-    BindField プロパティ(string)  
-    連結するfield(GroupBindfield)  
-    
-    IsPageRepert プロパティ(boolean)  
-    改ページの場合、データを繰り返し表示  
+* * *  
 
-    IsBreakPage プロパティ(boolean)  
-    BindField プロパティ変更時に改ページ（複数は不可）  
-    ※複数必要な場合はjsonで対応しておくこと  
+#### BindField プロパティ(string)  
+連結するfield(GroupBindfield)  
 
-    IsPageReset プロパティ(boolean)  
-    グループの改ページ時に[[page]],[[pages]]をリセットする
+#### IsPageRepert プロパティ(boolean)  
+改ページの場合、データを繰り返し表示  
 
-    IsFooterLastAppend プロパティ(boolean)  
-    DetailRepeatCount プロパティ使用時、空白行の後にグループフッタを表示
-    グループ計を下部に表示したい場合使用
+#### IsBreakPage プロパティ(boolean)  
+BindField プロパティ変更時に改ページ（複数は不可）  
+※複数必要な場合はjsonで対応しておくこと  
 
-    IsMergeTable プロパティ(boolean)  
-    falseの場合、各sectionにtabletagを配置(各sectionと結合しない)  
+#### IsPageReset プロパティ(boolean)  
+グループの改ページ時に[[page]],[[pages]]をリセットする
+
+#### IsMergeTable プロパティ(boolean)  
+falseの場合、各sectionの
+**\<header\>(\<footer\>)**
+内にtabletagを配置(各sectionと結合しない)  
 
 ## イベント
-
-FormatEventFunction  イベント  
+#### FormatEventFunction  イベント  
 各format時のイベント sample(norepeat.html参照)  
+**※注意：footerについては高さが変更になるエレメントの操作はしないでください**
 
 ## ヘッダー、フッターの合計計算について
 便利なsum関数などはありません。  

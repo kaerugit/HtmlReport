@@ -54,68 +54,69 @@
         tableと連結したくない場合は IsMergeTable:false をセットして <header><footer>タグ内にデータをセット
 
     -->
-    <div reporttype="group1" reportproperty="{'BindField':'都道府県CD','IsPageRepert':'true','IsBreakPage':'false'}"><!-- ,'IsMergeTable':'false' -->
+    <div reporttype="group1" reportproperty="{'BindField':'都道府県CD','IsPageRepert':'false','IsBreakPage':'false'}">
+        <!-- ,'IsMergeTable':'false' -->
         <table>
-            <thead >
+            <thead>
                 <tr style="height:15mm;">
-                    <td colspan="2">都道府県：</td>
+                    <td colspan="2">thead都道府県：</td>
                     <td colspan="3">[[都道府県]]</td>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="2">都道府県Count：</td>
+            <tfoot style="height:20mm">
+                <tr style="height:20mm">
+                    <td colspan="2">[[都道府県]]都道府県Count：</td>
                     <td colspan="3">[[datacount]]</td>
                 </tr>
             </tfoot>
         </table>
-    </div>
+</div>
 
-    <div reporttype="group2" reportproperty="{'BindField':'性別','IsPageRepert':'true','IsBreakPage':'false'}">
+    <div reporttype="group2" reportproperty="{'BindField':'性別','IsPageRepert':'false','IsBreakPage':'false'}">
         <table>
             <thead>
                 <tr style="height:15mm;">
-                    <td colspan="3">性別：</td>
+                    <td colspan="3">thead性別：</td>
                     <td colspan="2">[[性別]]</td>
                 </tr>
             </thead>
             <tfoot>
-                <tr>
-                    <td colspan="3">性別CountAAA：</td>
+                <tr style="height:20mm">
+                    <td colspan="3">tfoot性別CountAAA：</td>
                     <td colspan="2">[[sexdatacount]]</td>
                 </tr>
             </tfoot>
         </table>
     </div>
 
-    <div reporttype="group3" reportproperty="{'BindField':'性別','IsPageRepert':'true','IsBreakPage':'false'}">
+    <div reporttype="group3" reportproperty="{'BindField':'性別','IsPageRepert':'false','IsBreakPage':'false'}">
         <table>
             <thead>
                 <tr style="height:15mm;">
-                    <td colspan="3">333</td>
+                    <td colspan="3">thead333</td>
                     <td colspan="2">[[性別]]</td>
                 </tr>
             </thead>
             <tfoot>
-                <tr>
-                    <td colspan="3">性別CountBBB：</td>
+                <tr style="height:20mm">
+                    <td colspan="3">tfoot性別CountBBB：</td>
                     <td colspan="2">[[sexdatacount]]</td>
                 </tr>
             </tfoot>
         </table>
     </div>
 
-    <div reporttype="group4" reportproperty="{'BindField':'性別','IsPageRepert':'true','IsBreakPage':'false'}">
+    <div reporttype="group4" reportproperty="{'BindField':'性別','IsPageRepert':'false','IsBreakPage':'false'}">
         <table>
             <thead>
                 <tr style="height:15mm;">
-                    <td colspan="3">444</td>
+                    <td colspan="3">thead444</td>
                     <td colspan="2">[[性別]]</td>
                 </tr>
             </thead>
             <tfoot>
-                <tr>
-                    <td colspan="3">性別CountCCC：</td>
+                <tr style="height:20mm">
+                    <td colspan="3">tfoot性別CountCCC：</td>
                     <td colspan="2">[[sexdatacount]]</td>
                 </tr>
             </tfoot>
@@ -148,7 +149,7 @@
 
             <tfoot>
                 <tr style="height:50mm">
-                    <td colspan="4">footertest</td>
+                    <td colspan="4">footertest[[電話番号]]</td>
                     <td></td>
                 </tr>
             </tfoot>
