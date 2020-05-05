@@ -1,4 +1,8 @@
 # HtmlReport
+
+## こちらは古いバージョンです（以下最新版）
+https://github.com/kaerugit/HtmlReportTs
+
 ## 概要 
 htmlをReportとして使用するためのサンプル(htmlをそのまま印刷)  
 jsonデータをhtmlテンプレートの内容にあわせて帳票用に加工  
